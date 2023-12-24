@@ -1,16 +1,4 @@
-# elective
+#Mobile App Development
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Task 1:
+![UI task 1](https://github.com/sthakrishnakumar/elective1-IT-7th-sem/assets/60802660/2eb96bf3-dcaf-4b9f-9109-9b9ac85e601e)
