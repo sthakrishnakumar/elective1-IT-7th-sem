@@ -2,15 +2,23 @@ import 'package:elective/core/app_constant.dart';
 import 'package:elective/home_page.dart';
 import 'package:flutter/material.dart';
 
-class Task2Page extends StatelessWidget {
-  Task2Page({super.key});
+class Task2Page extends StatefulWidget {
+  const Task2Page({super.key});
 
+  @override
+  State<Task2Page> createState() => _Task2PageState();
+}
+
+class _Task2PageState extends State<Task2Page> {
   var gap = const SizedBox(
     height: 15,
   );
 
   var phoneController = TextEditingController();
+
   var formKey = GlobalKey<FormState>();
+
+  bool hideText = false;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +59,44 @@ class Task2Page extends StatelessWidget {
                 height: 3,
                 width: 200,
                 color: Colors.grey,
+              ),
+              gap,
+              SizedBox(
+                width: 300,
+                child: TextFormField(
+                  maxLength: 10,
+                  obscuringCharacter: "*",
+                  obscureText: hideText,
+                  decoration: InputDecoration(
+                    counterText: "",
+                    // iconColor: Colors.red,
+                    fillColor: Colors.white,
+                    filled: true,
+                    // icon: Icon(Icons.numbers),
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(
+                      Icons.phone,
+                      color: Colors.teal,
+                    ),
+                    suffixIcon: InkWell(
+                      onTap: () {
+                        setState(() {
+                          // if (hideText) {
+                          //   hideText = false;
+                          // } else {
+                          //   hideText = true;
+                          // }
+
+                          hideText = !hideText;
+                        });
+                      },
+                      child: Icon(
+                          hideText ? Icons.visibility : Icons.visibility_off),
+                    ),
+                    hintText: "Phone Number",
+                    labelText: "Phone",
+                  ),
+                ),
               ),
               gap,
               Container(
