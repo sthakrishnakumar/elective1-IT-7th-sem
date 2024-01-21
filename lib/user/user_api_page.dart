@@ -1,5 +1,6 @@
 import 'dart:convert';
-
+import 'package:elective/home_page.dart';
+import 'package:elective/user/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -20,6 +21,8 @@ class _UserApiPageState extends State<UserApiPage> {
     return data;
   }
 
+  String responseData = "Data Not Posted";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,10 +30,10 @@ class _UserApiPageState extends State<UserApiPage> {
         title: const Text("User Page"),
       ),
       body: FutureBuilder(
-        future: userData(),
+        future: UserRepository().userData(),
         builder: (ctx, snapshot) {
           if (snapshot.hasData) {
-            List userList = snapshot.data!["data"];
+            final userList = snapshot.data!.data;
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -52,15 +55,40 @@ class _UserApiPageState extends State<UserApiPage> {
                       child: Card(
                         child: ListTile(
                           leading: CircleAvatar(
-                            backgroundImage:
-                                NetworkImage(user["avatar"].toString()),
+                            backgroundImage: NetworkImage(user.avatar),
                           ),
-                          title: Text(
-                              user["first_name"] + " " + user["last_name"]),
+                          title: Text("${user.firstName} ${user.lastName}"),
                         ),
                       ),
                     ),
                   ),
+                  //POST
+                  Text(responseData),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final response = await UserRepository()
+                          .postJob(name: "Elective", job: "Flutter");
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                              "${response["id"]} " + response["createdAt"])));
+
+                      if (response["job"] == "Flutter") {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) {
+                              return const HomePage();
+                            },
+                          ),
+                        );
+                      }
+                      var createdAt = response;
+                      setState(() {
+                        responseData = createdAt.toString();
+                      });
+                    },
+                    child: const Text("Post Job"),
+                  )
                 ],
               ),
             );
