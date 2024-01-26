@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
 import 'user_detail_page.dart';
+import 'user_post_model.dart';
 
 class UserApiPage extends StatefulWidget {
   const UserApiPage({super.key});
@@ -14,11 +15,11 @@ class UserApiPage extends StatefulWidget {
 }
 
 class _UserApiPageState extends State<UserApiPage> {
-  Future<Map<String, dynamic>> userData() async {
+  Future<UserResponseModel> userData() async {
     Response response =
         await get(Uri.parse("https://reqres.in/api/users?page=2"));
     Map<String, dynamic> data = jsonDecode(response.body);
-    return data;
+    return UserResponseModel.fromJson(data);
   }
 
   String responseData = "Data Not Posted";
@@ -66,13 +67,15 @@ class _UserApiPageState extends State<UserApiPage> {
                   Text(responseData),
                   ElevatedButton(
                     onPressed: () async {
-                      final response = await UserRepository()
-                          .postJob(name: "Elective", job: "Flutter");
+                      final userRequestModel =
+                          UserRequestModel(name: "Hello", job: "Flutter");
+                      final response =
+                          await UserRepository().postJob(userRequestModel);
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                              "${response["id"]} " + response["createdAt"])));
+                          content:
+                              Text("${response.id} ${response.createdAt}")));
 
-                      if (response["job"] == "Flutter") {
+                      if (response.job == "Flutter") {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -82,7 +85,7 @@ class _UserApiPageState extends State<UserApiPage> {
                           ),
                         );
                       }
-                      var createdAt = response;
+                      var createdAt = response.id;
                       setState(() {
                         responseData = createdAt.toString();
                       });

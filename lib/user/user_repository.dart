@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:elective/user/user_post_model.dart';
 import 'package:elective/user/users_model.dart';
 import 'package:http/http.dart';
 
@@ -10,14 +11,12 @@ class UserRepository {
     return UsersModel.fromJson(data);
   }
 
-  Future<Map<String, dynamic>> postJob(
-      {required String name, required String job}) async {
+  Future<UserResponseModel> postJob(UserRequestModel userRequestModel) async {
     Response response = await post(
       Uri.parse("https://reqres.in/api/users"),
-      body: {"name": name, "job": job},
+      body: userRequestModel.toJson(),
     );
     Map<String, dynamic> data = jsonDecode(response.body);
-
-    return data;
+    return UserResponseModel.fromJson(data);
   }
 }
